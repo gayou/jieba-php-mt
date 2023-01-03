@@ -1,3 +1,6 @@
+This repository copied form  http://www.fukuball.com/jieba-php/
+<br>
+
 [jieba-php](http://www.fukuball.com/jieba-php/)
 =========
 [![Build Status](https://travis-ci.org/fukuball/jieba-php.svg?branch=master)](https://travis-ci.org/fukuball/jieba-php)
