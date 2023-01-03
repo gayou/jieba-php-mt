@@ -31,6 +31,7 @@ class Posseg
     public static $prob_emit = array();
     public static $char_state = array();
     public static $word_tag = array();
+    public static $word_japanese = array();
     public static $pos_tag_readable = array();
 
     /**
@@ -58,9 +59,12 @@ class Posseg
             while (($line = fgets($content)) !== false) {
                 $explode_line = explode(' ', trim($line));
                 $word = $explode_line[0];
-                $freq = $explode_line[1];
+                // $freq = $explode_line[1]; //使われてないのでコメントアウト
                 $tag = $explode_line[2];
                 self::$word_tag[$word] = $tag;
+                if (count($explode_line) == 4) {
+                    self::$word_japanese[$word] = $explode_line[3];
+                }
             }
             fclose($content);
         }
@@ -72,9 +76,12 @@ class Posseg
                 while (($line = fgets($content)) !== false) {
                     $explode_line = explode(' ', trim($line));
                     $word = $explode_line[0];
-                    $freq = $explode_line[1];
+                    // $freq = $explode_line[1]; //使われてないのでコメントアウト
                     $tag = $explode_line[2];
                     self::$word_tag[$word] = $tag;
+                    if (count($explode_line) == 4) {
+                        self::$word_japanese[$word] = $explode_line[3];
+                    }
                 }
                 fclose($content);
             }
@@ -435,7 +442,11 @@ class Posseg
                         } else {
                             $buf_tag = 'x';
                         }
-                        $words[] = array('word' => $buf, 'tag' => $buf_tag);
+                        if (isset(self::$word_japanese[$buf])) {
+                            $words[] = array('word' => $buf, 'tag' => $buf_tag, 'japanese' => self::$word_japanese[$buf]);
+                        } else {
+                            $words[] = array('word' => $buf, 'tag' => $buf_tag);
+                        }
                         $buf = '';
                     } else {
                         if (! isset(Jieba::$FREQ[$buf])) {
@@ -451,7 +462,11 @@ class Posseg
                                 } else {
                                     $buf_tag = 'x';
                                 }
-                                $words[] = array('word' => $word, 'tag' => $buf_tag);
+                                if (isset(self::$word_japanese[$word])) {
+                                    $words[] = array('word' => $word, 'tag' => $buf_tag, 'japanese' => self::$word_japanese[$word]);
+                                } else {
+                                    $words[] = array('word' => $word, 'tag' => $buf_tag);
+                                }
                             }
                         }
                         $buf = '';
@@ -463,7 +478,11 @@ class Posseg
                 } else {
                     $buf_tag = 'x';
                 }
-                $words[] = array('word' => $l_word, 'tag' => $buf_tag);
+                if (isset(self::$word_japanese[$l_word])) {
+                    $words[] = array('word' => $l_word, 'tag' => $buf_tag, 'japanese' => self::$word_japanese[$l_word]);
+                } else {
+                    $words[] = array('word' => $l_word, 'tag' => $buf_tag);
+                }
             }
             $x = $y;
         }
@@ -475,7 +494,11 @@ class Posseg
                 } else {
                     $buf_tag = 'x';
                 }
-                $words[] = array('word'=>$buf, 'tag'=>$buf_tag);
+                if (isset(self::$word_japanese[$buf])) {
+                    $words[] = array('word' => $buf, 'tag' => $buf_tag, 'japanese' => self::$word_japanese[$buf]);
+                } else {
+                    $words[] = array('word' => $buf, 'tag' => $buf_tag);
+                }
             } else {
                 if (! isset(Jieba::$FREQ[$buf])) {
                     $regognized = self::__cutDetail($buf);
@@ -490,7 +513,11 @@ class Posseg
                         } else {
                             $buf_tag = 'x';
                         }
-                        $words[] = array('word'=>$word, 'tag'=>$buf_tag);
+                        if (isset(self::$word_japanese[$word])) {
+                            $words[] = array('word' => $word, 'tag' => $buf_tag, 'japanese' => self::$word_japanese[$word]);
+                        } else {
+                            $words[] = array('word' => $word, 'tag' => $buf_tag);
+                        }
                     }
                 }
             }

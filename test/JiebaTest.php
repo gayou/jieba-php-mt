@@ -282,4 +282,49 @@ class JiebaTest extends TestCase
 
     }
 
+    public function testPossegCutIncludeJapanese()
+    {
+        $case_array = array(
+            array(
+                "word" => "中信兄弟",
+                "tag" => "nz",
+                "japanese" => "中信Bros"
+            ),
+            array(
+                "word" => "作客",
+                "tag" => "n"
+            ),
+            array(
+                "word" => "桃園",
+                "tag" => "ns"
+            ),
+            array(
+                "word" => "球場",
+                "tag" => "n"
+            ),
+            array(
+                "word" => "面對",
+                "tag" => "v"
+            ),
+            array(
+                "word" => "樂天桃猿",
+                "tag" => "nz",
+                "japanese" => "樂天桃猿"
+            ),
+            array(
+                "word" => "。",
+                "tag" => "w"
+            ),
+        );
+            
+        Jieba::init(array('mode' => 'default','dict' => 'big'));
+        Jieba::loadUserDict(dirname(dirname(__FILE__)).'/test/dict/test_user_dict.txt');
+        Finalseg::init();
+        Posseg::init();
+        
+        $seg_list = Posseg::cut("中信兄弟作客桃園球場面對樂天桃猿。");
+        print_r($seg_list);
+        
+        $this->assertEquals($case_array, $seg_list);
+    }
 }
