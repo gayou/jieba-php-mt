@@ -58,22 +58,30 @@ class Jieba
 
         $options = array_merge($defaults, $options);
 
-        if ($options['mode']=='test') {
+        if ($options['mode'] == 'test') {
             echo "Building Trie...\n";
         }
 
-        if ($options['dict']=='small') {
+        if ($options['dict'] == 'small') {
             $f_name = "dict.small.txt";
-            self::$dictname="dict.small.txt";
-        } elseif ($options['dict']=='big') {
+            self::$dictname = "dict.small.txt";
+        } elseif ($options['dict'] == 'big') {
             $f_name = "dict.big.txt";
             self::$dictname="dict.big.txt";
-        } else {
+        } elseif ($options['dict'] == 'normal') {
             $f_name = "dict.txt";
             self::$dictname="dict.txt";
+        } elseif ($options['dict'] == 'customized') {
+            $f_name = $options["path"];
+            self::$dictname = $options["path"];
         }
 
-        if ($options['cjk']=='all') {
+        if ($options['dict'] !== 'customized') {
+            $f_name = dirname(dirname(__FILE__))."/dict/".$f_name;
+            self::$dictname = $f_name;
+        }
+
+        if ($options['cjk'] == 'all') {
             self::$cjk_all = true;
         } else {
             self::$cjk_all = false;
@@ -81,10 +89,10 @@ class Jieba
 
         $t1 = microtime(true);
         self::$dag_cache = array();
-        self::$trie = Jieba::genTrie(dirname(dirname(__FILE__))."/dict/".$f_name);
+        self::$trie = Jieba::genTrie($f_name);
         self::__calcFreq();
 
-        if ($options['mode']=='test') {
+        if ($options['mode'] == 'test') {
             echo "loading model cost ".(microtime(true) - $t1)." seconds.\n";
             echo "Trie has been built succesfully.\n";
         }

@@ -54,8 +54,8 @@ class Posseg
         self::$prob_emit = self::loadModel(dirname(dirname(__FILE__)).'/model/pos/prob_emit.json');
         self::$char_state = self::loadModel(dirname(dirname(__FILE__)).'/model/pos/char_state.json');
 
-        if (Jieba::$dictname!='') {
-            $content = fopen(dirname(dirname(__FILE__)).'/dict/'.Jieba::$dictname, 'r');
+        if (Jieba::$dictname != '') {
+            $content = fopen(Jieba::$dictname, 'r');
             while (($line = fgets($content)) !== false) {
                 $explode_line = explode(' ', trim($line));
                 $word = $explode_line[0];
