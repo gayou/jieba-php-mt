@@ -1,4 +1,6 @@
-This repository copied form https://github.com/fukuball/jieba-php
+This repository copied form https://github.com/fukuball/jieba-php .
+
+I copied the original repository because I wanted to extend the functionality personally.
 <br>
 
 [jieba-php](http://www.fukuball.com/jieba-php/)
