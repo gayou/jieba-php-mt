@@ -452,6 +452,10 @@ class Posseg
                         if (! isset(Jieba::$FREQ[$buf])) {
                             $regognized = self::__cutDetail($buf);
                             foreach ($regognized as $key => $word) {
+                                // 辞書に日本語訳がついている場合、訳語を追加
+                                if (isset(self::$word_japanese[$word['word']])) {
+                                    $word['japanese'] = self::$word_japanese[$word['word']];
+                                }
                                 $words[] = $word;
                             }
                         } else {
@@ -503,6 +507,10 @@ class Posseg
                 if (! isset(Jieba::$FREQ[$buf])) {
                     $regognized = self::__cutDetail($buf);
                     foreach ($regognized as $key => $word) {
+                        // 辞書に日本語訳がついている場合、訳語を追加
+                        if (isset(self::$word_japanese[$word['word']])) {
+                            $word['japanese'] = self::$word_japanese[$word['word']];
+                        }
                         $words[] = $word;
                     }
                 } else {
